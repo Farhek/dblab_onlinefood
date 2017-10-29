@@ -44,7 +44,6 @@ public class MyBot extends TelegramLongPollingBot {
                     throw new IllegalStateException("Cannot connect the database!", e);
                 }
             }
-
         }
     }
 

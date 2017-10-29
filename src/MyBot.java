@@ -59,7 +59,6 @@ public class MyBot extends TelegramLongPollingBot implements State {
 
     @Override
     public void message() {
-        
 
     }
 
@@ -72,4 +71,5 @@ public class MyBot extends TelegramLongPollingBot implements State {
     public void Validate() {
 
     }
+
 }

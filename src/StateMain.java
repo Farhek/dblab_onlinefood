@@ -82,11 +82,6 @@ public class StateMain implements State {
             e.printStackTrace();
         }
 
-        if (update.getMessage().getText().equals("سفارش غذا")) {
-
-        } else if (update.getMessage().getText().equals("لیست رستوران ها")) {
-
-        }
     }
 }
 

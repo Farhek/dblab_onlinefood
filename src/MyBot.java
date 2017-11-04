@@ -48,6 +48,19 @@ public class MyBot extends TelegramLongPollingBot  {
             e.printStackTrace();
         }
 
+        if(update.hasCallbackQuery()) {
+            String call_data = update.getCallbackQuery().getData();
+            long message_id = update.getCallbackQuery().getMessage().getMessageId();
+            long chat_id = update.getCallbackQuery().getMessage().getChatId();
+
+            if (call_data.equals(StateMain.ORDER_FOOD)) {
+                search.Validate(update);
+            } else if (call_data.equals(StateMain.MANAGE_FOOD)) {
+
+            }
+            return;
+        }
+
         if(user_sate == null)
             user_sate = STATE_MAIN;
 
@@ -59,6 +72,7 @@ public class MyBot extends TelegramLongPollingBot  {
         } else if(user_sate.equals(STATE_SEARCH)){
 
         }
+
 
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -86,16 +100,7 @@ public class MyBot extends TelegramLongPollingBot  {
                     throw new IllegalStateException("Cannot connect the database!", e);
                 }
             }
-        } else if(update.hasCallbackQuery()){
-            String call_data = update.getCallbackQuery().getData();
-            long message_id = update.getCallbackQuery().getMessage().getMessageId();
-            long chat_id = update.getCallbackQuery().getMessage().getChatId();
-
-            if (call_data.equals(StateMain.ORDER_FOOD)) {
-                search.Validate(update);
-            } else if (call_data.equals(StateMain.MANAGE_FOOD)){
-
-            }
+        }
 
 
 /*            if (call_data.equals(StateMain.ORDER_FOOD)) {
@@ -110,7 +115,7 @@ public class MyBot extends TelegramLongPollingBot  {
                     e.printStackTrace();
                 }
             }*/
-        }
+
     }
 
     @Override

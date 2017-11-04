@@ -35,25 +35,38 @@ public class StateSearch implements State{
             connection = DriverManager.getConnection(MyBot.url, MyBot.username, MyBot.password);
         } catch (SQLException e) {
             e.printStackTrace();
-        };
-
-        SendMessage msg = new SendMessage(update.getMessage().getChatId(), "غذای مورد نظر خود را وارد کنید:"); // غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم
+        }
+        RestaurantsModel model = null;
+        SendMessage msg; // غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم
         try {
-            fetchFood(update.getMessage().getText(), connection);
+            model = fetchFood(update.getMessage().getText(), connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        msg = new SendMessage(update.getMessage().getChatId(), "رستوران" + model.names + "\n" + model.description);
+
+        try {
+            Main.bot.execute(msg);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
-    private String fetchFood(String food, Connection connection) throws SQLException {
-        String state = null;
-        ResultSet result = connection.createStatement().executeQuery("select * from new_schema.menue where food = '" + food + "';" );
+    private RestaurantsModel fetchFood(String food, Connection connection) throws SQLException {
+        String output = null;
+        RestaurantsModel model = null;
+
+        ResultSet result = connection.createStatement().executeQuery("select id_restaurants from new_schema.menue , new_schema.restaurants where food = '" + food + "' and restaurants.id_restaurants = menue.id_restaurants;" );
         while (result.next()) {
-            state = result.getString("state");
+            model =  new RestaurantsModel(result.getInt("restaurants_id"), result.getString("names"),
+                    result.getString("addresses"), result.getString("telephone_numbers"),
+                    result.getString("description"), result.getInt("startofwork"),
+                    result.getInt("endofwork"));
             break;
         }
 
-        return state;
+        return model;
     }
+
 }

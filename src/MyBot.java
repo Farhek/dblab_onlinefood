@@ -3,6 +3,7 @@
  */
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -10,8 +11,9 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.*;
 
-public class MyBot extends TelegramLongPollingBot  {
+import static java.lang.Math.toIntExact;
 
+public class MyBot extends TelegramLongPollingBot  {
 
     private String user_sate = null;
 
@@ -24,6 +26,10 @@ public class MyBot extends TelegramLongPollingBot  {
     final static String url = "jdbc:mysql://localhost:3306/new_schema";
     final static String username = "newuser";
     final static String password = "Mysqlpass95/";
+
+
+    static StateMain main = new StateMain();
+    static StateSearch search = new StateSearch();
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -46,14 +52,13 @@ public class MyBot extends TelegramLongPollingBot  {
             user_sate = STATE_MAIN;
 
         if(user_sate.equals(STATE_UNKNOWN)){
-
+            StateUnknown unknown = new StateUnknown(update.getMessage().getChatId());
+            unknown.Validate(update);
         } else if(user_sate.equals(STATE_MAIN)){
-            StateMain main = new StateMain(update.getMessage().getChatId());
-            main.Validate(update.getMessage());
+            main.Validate(update);
         } else if(user_sate.equals(STATE_SEARCH)){
 
         }
-
 
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -68,8 +73,7 @@ public class MyBot extends TelegramLongPollingBot  {
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 try {
                     System.out.println("Database connected!");
                     Statement statement;
@@ -82,6 +86,30 @@ public class MyBot extends TelegramLongPollingBot  {
                     throw new IllegalStateException("Cannot connect the database!", e);
                 }
             }
+        } else if(update.hasCallbackQuery()){
+            String call_data = update.getCallbackQuery().getData();
+            long message_id = update.getCallbackQuery().getMessage().getMessageId();
+            long chat_id = update.getCallbackQuery().getMessage().getChatId();
+
+            if (call_data.equals(StateMain.ORDER_FOOD)) {
+                search.Validate(update);
+            } else if (call_data.equals(StateMain.MANAGE_FOOD)){
+
+            }
+
+
+/*            if (call_data.equals(StateMain.ORDER_FOOD)) {
+                String answer = "";
+                EditMessageText new_message = new EditMessageText()
+                        .setChatId(chat_id)
+                        .setMessageId(toIntExact(message_id))
+                        .setText(answer);
+                try {
+                    execute(new_message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }*/
         }
     }
 

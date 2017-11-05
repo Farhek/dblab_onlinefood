@@ -3,6 +3,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -19,12 +20,16 @@ import java.util.List;
  */
 public class StateMain implements State {
 
-    long chat_id;
+/*
+    private long chat_id;
 
-    public StateMain(long chat_id){
+    StateMain(long chat_id){
         this.chat_id = chat_id;
     }
+*/
 
+    static String ORDER_FOOD = "سفارش غذا";
+    static String MANAGE_FOOD = "مدیریت رستوران";
 
     @Override
     public void message() {
@@ -33,11 +38,10 @@ public class StateMain implements State {
 
     @Override
     public void ChangeState() {
-
     }
 
     @Override
-    public void Validate(Message command) {
+    public void Validate(Update update) {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(MyBot.url, MyBot.username, MyBot.password);
@@ -62,12 +66,13 @@ public class StateMain implements State {
         */
 
         // Add it to the message
-        SendMessage msg = new SendMessage(chat_id, "غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم");
+        SendMessage msg = new SendMessage(update.getMessage().getChatId(), "گزینه مورد نظر خود را انتخاب کنید"); // غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم
 
         List<KeyboardRow> keybRows = new ArrayList<>();
         KeyboardRow keyRow = new KeyboardRow();
-        keyRow.add("جستجو");
-        keyRow.add("پیگیری");
+        keyRow.add(ORDER_FOOD);
+        keyRow.add(MANAGE_FOOD);
+
         keybRows.add(keyRow);
         msg.setReplyMarkup(new ReplyKeyboardMarkup().setKeyboard(keybRows));
 
@@ -77,16 +82,12 @@ public class StateMain implements State {
             e.printStackTrace();
         }
 
-        if (command.equals("سفارش غذا") || command.equals("سفارش غذا")) {
+        if (update.getMessage().getText().equals("سفارش غذا")) {
 
-            } else if (command.equals("جست و جو رستوران") || command.equals("جست و جو رستوران")) {
+        } else if (update.getMessage().getText().equals("لیست رستوران ها")) {
 
-            } else if (command.equals("جست و جو رستوران") || command.equals("جست و جو رستوران")) {
-
-            } else{
-
-            }
         }
     }
+}
 
 

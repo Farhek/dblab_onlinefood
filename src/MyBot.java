@@ -2,10 +2,8 @@
  * Created by Asus on 15/10/2017.
  */
 
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class MyBot extends TelegramLongPollingBot  {
             state = new StateManage();
         }else
             state = new StateMain();
-        
+
         //******************//
         state.Validate(update);
 
@@ -82,11 +80,6 @@ public class MyBot extends TelegramLongPollingBot  {
     }
 
 
-
-    public void sendMsg(SendMessage message) throws TelegramApiException {
-        execute(message);
-    }
-
     private String fetchUserState(long chatID) throws SQLException {
         getConnection();
         String state = null;
@@ -101,7 +94,7 @@ public class MyBot extends TelegramLongPollingBot  {
 
     private static Connection connection;
 
-    static void getConnection(){
+    private static void getConnection(){
         if(connection == null)
             try {
                 connection = DriverManager.getConnection(url, username, password);

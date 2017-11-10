@@ -1,18 +1,11 @@
-import org.telegram.telegrambots.api.objects.Message;
-
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
+
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +18,8 @@ public class StateMain implements State {
     static String MANAGE_FOOD = "مدیریت رستوران";
 
 
-    final static String Main_Callback_Food ="Main_Keyboard_Callback_Food";
-    final static String Main_Callback_Manage ="Main_Keyboard_Callback_Manage";
+    private final static String Main_Callback_Food ="Main_Keyboard_Callback_Food";
+    private final static String Main_Callback_Manage ="Main_Keyboard_Callback_Manage";
 
 
     @Override
@@ -85,7 +78,7 @@ public class StateMain implements State {
                 matrix.add(row);
 
                 try {
-                    Main.bot.sendMsg(welcome);
+                    Main.bot.execute(welcome);
                     Main.bot.sendMessage(choose.setReplyMarkup(inlineKeyboardMarkup.setKeyboard(matrix)));
                 } catch (TelegramApiException e) {
                     e.printStackTrace();

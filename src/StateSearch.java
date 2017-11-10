@@ -24,7 +24,7 @@ public class StateSearch implements State{
     }
 
     @Override
-    public void ChangeState() {
+    public void ChangeState(String state) {
 
     }
 
@@ -38,7 +38,9 @@ public class StateSearch implements State{
         }
         RestaurantsModel model = null;
         SendMessage msg; // غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم
+
         try {
+            if(update.getMessage() != null)
             model = fetchFood(update.getMessage().getText(), connection);
         } catch (SQLException e) {
             e.printStackTrace();

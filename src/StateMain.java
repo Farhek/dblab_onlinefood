@@ -1,10 +1,11 @@
 import org.telegram.telegrambots.api.objects.Message;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.Keyboard;
+
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -20,16 +21,13 @@ import java.util.List;
  */
 public class StateMain implements State {
 
-/*
-    private long chat_id;
-
-    StateMain(long chat_id){
-        this.chat_id = chat_id;
-    }
-*/
-
     static String ORDER_FOOD = "سفارش غذا";
     static String MANAGE_FOOD = "مدیریت رستوران";
+
+
+    final static String Main_Callback_Food ="Main_Keyboard_Callback_Food";
+    final static String Main_Callback_Manage ="Main_Keyboard_Callback_Manage";
+
 
     @Override
     public void message() {
@@ -37,51 +35,71 @@ public class StateMain implements State {
     }
 
     @Override
-    public void ChangeState() {
+    public void ChangeState(String state) {
+        switch (state){
+            case MyBot.STATE_SEARCH : MyBot.state = new StateSearch();
+                break;
+
+            case MyBot.STATE_MANAGE : MyBot.state = new StateManage();
+                break;
+        }
+
+        try {
+            MyBot.insertUserState(MyBot.chat_id, state);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void Validate(Update update) {
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(MyBot.url, MyBot.username, MyBot.password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        };
 
-/*
-        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-        List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton("Update message text").callbackData("update_msg_text"));
-        // Set the keyboard to the markup
-        rowsInline.add(rowInline);
-*/
+        // We check if the update has a message and the message has text
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            // Set variables
+            String message_text = update.getMessage().getText();
+            long chat_id = update.getMessage().getChatId();
 
-/*        InlineKeyboardButton[][] inline_keyboard = new InlineKeyboardButton[2][1];
-        inline_keyboard[0][0] = new InlineKeyboardButton("جستجوی غذا").callbackData("");
-        inline_keyboard[1][0] = new InlineKeyboardButton("پیگیری غذا");
+            if(message_text.equals("/start")){
+                try {
+                    MyBot.insertUserState(update.getMessage().getChatId(), MyBot.STATE_START);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
-        List<Keyboard> keyboards = new ArrayList<>();
-        keyboards.add(new InlineKeyboardMarkup(inline_keyboard));
-        */
+                SendMessage welcome= new SendMessage(chat_id, "به آنلاین فود خوش آمدید"); // Create a message object object
+                SendMessage choose = new SendMessage(update.getMessage().getChatId(), "گزینه مورد نظر خود را انتخاب کنید"); // غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم
 
-        // Add it to the message
-        SendMessage msg = new SendMessage(update.getMessage().getChatId(), "گزینه مورد نظر خود را انتخاب کنید"); // غذای مورد نظر خود را وارد کنید تا نزدیکترین رستوران ها را برایتان نمایش دهیم
 
-        List<KeyboardRow> keybRows = new ArrayList<>();
-        KeyboardRow keyRow = new KeyboardRow();
-        keyRow.add(ORDER_FOOD);
-        keyRow.add(MANAGE_FOOD);
+                InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+                List<List<InlineKeyboardButton>> matrix = new ArrayList<>();
 
-        keybRows.add(keyRow);
-        msg.setReplyMarkup(new ReplyKeyboardMarkup().setKeyboard(keybRows));
+                List<InlineKeyboardButton> row = new ArrayList<>();
 
-        try {
-            Main.bot.sendMsg(msg);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+                row.add(new InlineKeyboardButton(ORDER_FOOD).setCallbackData(StateMain.Main_Callback_Food));
+                row.add(new InlineKeyboardButton(MANAGE_FOOD).setCallbackData(StateMain.Main_Callback_Manage));
+
+                matrix.add(row);
+
+                try {
+                    Main.bot.sendMsg(welcome);
+                    Main.bot.sendMessage(choose.setReplyMarkup(inlineKeyboardMarkup.setKeyboard(matrix)));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
+        else if(update.hasCallbackQuery()) {
+            String call_data = update.getCallbackQuery().getData();
 
+            if (call_data.equals(StateMain.Main_Callback_Food)) {
+                ChangeState(MyBot.STATE_SEARCH);
+            } else if (call_data.equals(StateMain.Main_Callback_Manage)) {
+                ChangeState(MyBot.STATE_MANAGE);
+            }
+        }
     }
 }
 

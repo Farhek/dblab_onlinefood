@@ -8,21 +8,21 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyBot extends TelegramLongPollingBot  {
 
     private String user_sate = null;
 
-    final static String STATE_UNKNOWN = "UNKNOWN_STATE";
-    final static String STATE_START = "START_STATE";
     final static String STATE_MAIN = "MAIN_STATE";
     final static String STATE_SEARCH = "SEARCH_STATE";
     final static String STATE_MANAGE = "MANAGE_STATE";
 
 
-    final static String url = "jdbc:mysql://localhost:3306/new_schema";
-    final static String username = "newuser";
-    final static String password = "Mysqlpass95/";
+    final private static String url = "jdbc:mysql://localhost:3306/new_schema";
+    final private static String username = "newuser";
+    final private static String password = "Mysqlpass95/";
 
     static State state = null;
     static long chat_id;
@@ -30,7 +30,7 @@ public class MyBot extends TelegramLongPollingBot  {
     @Override
     public void onUpdateReceived(Update update) {
 
-        if(update.getMessage().getChatId() != chat_id)
+        if(update.hasMessage() && update.getMessage().getChatId() != chat_id)
             chat_id = update.getMessage().getChatId();
 
 
@@ -49,7 +49,9 @@ public class MyBot extends TelegramLongPollingBot  {
             state = new StateSearch();
         } else if(user_sate.equals(STATE_MANAGE)){
             state = new StateManage();
-        }
+        }else
+            state = new StateMain();
+        
         //******************//
         state.Validate(update);
 
@@ -90,7 +92,7 @@ public class MyBot extends TelegramLongPollingBot  {
         String state = null;
         ResultSet result = connection.createStatement().executeQuery("select user_state from new_schema.user_state where user_id = '" + chatID + "';" );
         while (result.next()) {
-            state = result.getString("state");
+            state = result.getString("user_state");
             break;
         }
 
@@ -109,15 +111,33 @@ public class MyBot extends TelegramLongPollingBot  {
 
     }
 
-    static void insertUserState(long chat_id,String state) throws SQLException{
+    static void insertUserState(long chat_id, String state) throws SQLException{
             getConnection();
             System.out.println("Database connected!");
             Statement statement;
             if(connection != null) {
                 statement = connection.createStatement();
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
+                statement.executeUpdate("insert into new_schema.users (user_id, user_message) values (" + chat_id + ",'');");
                 statement.executeUpdate("insert into new_schema.user_state (user_id, user_state) values (" + chat_id + ",'" + state + "');");
             }
+    }
+
+
+    static List<RestaurantsModel> fetchFood(String food) throws SQLException {
+        getConnection();
+        List<RestaurantsModel> models = new ArrayList<>();
+
+        ResultSet result = connection.createStatement().executeQuery("select id_restaurants from new_schema.menue , new_schema.restaurants where food = '" + food + "' and restaurants.id_restaurants = menue.id_restaurants;" );
+        while (result.next()) {
+            models.add(new RestaurantsModel(result.getInt("restaurants_id"), result.getString("names"),
+                    result.getString("addresses"), result.getString("telephone_numbers"),
+                    result.getString("description"), result.getInt("startofwork"),
+                    result.getInt("endofwork")));
+
+        }
+
+        return models;
     }
 
 }

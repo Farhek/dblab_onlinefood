@@ -44,6 +44,8 @@ public class StateMain implements State {
                 break;
         }
 
+        MyBot.state.message();
+
         try {
             MyBot.insertUserState(MyBot.chat_id, state);
         } catch (SQLException e) {
@@ -63,7 +65,7 @@ public class StateMain implements State {
 
             if(message_text.equals("/start")){
                 try {
-                    MyBot.insertUserState(update.getMessage().getChatId(), MyBot.STATE_START);
+                    MyBot.insertUserState(update.getMessage().getChatId(), MyBot.STATE_MAIN);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

@@ -1,4 +1,4 @@
-import org.telegram.telegrambots.api.objects.Message;
+
 import org.telegram.telegrambots.api.objects.Update;
 
 /**
@@ -7,6 +7,6 @@ import org.telegram.telegrambots.api.objects.Update;
 public interface State {
 
     void message();
-    void ChangeState();
+    void ChangeState(String state);
     void Validate(Update update);
 }

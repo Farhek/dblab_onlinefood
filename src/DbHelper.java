@@ -69,9 +69,9 @@ public class DbHelper {
         getConnection();
         List<RestaurantsModel> models = new ArrayList<>();
 
-        ResultSet result = connection.createStatement().executeQuery("select id_restaurants from new_schema.menue , new_schema.restaurants where food = '" + food + "' and restaurants.id_restaurants = menue.id_restaurants;" );
+        ResultSet result = connection.createStatement().executeQuery("select * from new_schema.menue , new_schema.restaurants where food = '" + food + "' and restaurants.id_restaurants = menue.id_restuarants;" );
         while (result.next()) {
-            models.add(new RestaurantsModel(result.getInt("restaurants_id"), result.getString("names"),
+            models.add(new RestaurantsModel(result.getInt("id_restaurants"), result.getString("names"),
                     result.getString("addresses"), result.getString("telephone_numbers"),
                     result.getString("description"), result.getInt("startofwork"),
                     result.getInt("endofwork")));

@@ -43,7 +43,7 @@ public class StateSearch implements State{
 
         if (update.hasMessage() && update.getMessage().hasText()) {
             try {
-                searchResult= MyBot.fetchFood(update.getMessage().getText());
+                searchResult= DbHelper.fetchFood(update.getMessage().getText());
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -74,11 +74,23 @@ public class DbHelper {
             models.add(new RestaurantsModel(result.getInt("id_restaurants"), result.getString("names"),
                     result.getString("addresses"), result.getString("telephone_numbers"),
                     result.getString("description"), result.getInt("startofwork"),
-                    result.getInt("endofwork")));
+                    result.getInt("endofwork"), result.getInt("idmenue")));
 
         }
 
         return models;
     }
+
+    static void insertOrderAddress(long chat_id, String address) throws SQLException {
+        getConnection();
+        System.out.println("Database connected!");
+        Statement statement;
+        if(connection != null) {
+            statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            statement.executeUpdate("insert into new_schema.user_state (user_id, address) values (" + chat_id + ",'" + address + "');");
+        }
+    }
+
 
 }

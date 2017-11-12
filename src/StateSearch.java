@@ -20,6 +20,7 @@ public class StateSearch implements State{
     static List<RestaurantsModel> searchResult;
     static RestaurantsModel selected;
 
+
     @Override
     public void message() {
         SendMessage msg = new SendMessage(MyBot.chat_id, "غذای مورد نظر را وارد کنید:");
@@ -33,7 +34,16 @@ public class StateSearch implements State{
 
     @Override
     public void ChangeState(String state) {
+        MyBot.state = new StateOrder();
+        MyBot.user_sate = MyBot.STATE_ORDER;
 
+        MyBot.state.message();
+
+        try {
+            DbHelper.insertUserState(MyBot.chat_id, MyBot.user_sate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,10 +81,9 @@ public class StateSearch implements State{
             for(RestaurantsModel model : searchResult)
                 if(model.names.equals(update.getCallbackQuery().getData())) {
                     selected = model;
+                    ChangeState(MyBot.STATE_ORDER);
                     return;
                 }
-
-
 
         }
 

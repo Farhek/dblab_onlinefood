@@ -5,8 +5,9 @@ public class RestaurantsModel {
     int id_restaurants;
     String names;
     String addresses;
+    int discount;
 
-    public RestaurantsModel(int id_restaurants, String names, String addresses, String telephone_numbers, String description, int startofwork, int endofwork) {
+    public RestaurantsModel(int id_restaurants, String names, String addresses, String telephone_numbers, String description, int startofwork, int endofwork , int discount) {
         this.id_restaurants = id_restaurants;
         this.names = names;
         this.addresses = addresses;
@@ -14,6 +15,7 @@ public class RestaurantsModel {
         this.description = description;
         this.startofwork = startofwork;
         this.endofwork = endofwork;
+        this.discount = discount;
     }
 
     String telephone_numbers;

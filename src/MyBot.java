@@ -16,6 +16,9 @@ public class MyBot extends TelegramLongPollingBot  {
     final static String STATE_MAIN = "MAIN_STATE";
     final static String STATE_SEARCH = "SEARCH_STATE";
     final static String STATE_MANAGE = "MANAGE_STATE";
+    final static String STATE_ORDER = "ORDER_STATE";
+    final static String STATE_TYPE = "TYPE_STATE";
+    final static String STATE_PAYMENT = "PAYMENT_STATE";
 
 
     final  static String url = "jdbc:mysql://localhost:3306/new_schema";
@@ -47,7 +50,13 @@ public class MyBot extends TelegramLongPollingBot  {
             state = new StateSearch();
         } else if(user_sate.equals(STATE_MANAGE)){
             state = new StateManage();
-        }else
+        }else if(user_sate.equals(STATE_ORDER)){
+            state = new StateOrder();
+        }else if(user_sate.equals(STATE_TYPE)){
+            state = new StatePaymentType();
+        }else if(user_sate.equals(STATE_PAYMENT)){
+            state = new StatePayment();
+        } else
             state = new StateMain();
 
         //******************//

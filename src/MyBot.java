@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MyBot extends TelegramLongPollingBot  {
 
-    private String user_sate = null;
+    public static String user_sate = null;
 
     final static String STATE_MAIN = "MAIN_STATE";
     final static String STATE_SEARCH = "SEARCH_STATE";

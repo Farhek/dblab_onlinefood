@@ -31,16 +31,18 @@ public class StateMain implements State {
     public void ChangeState(String state) {
         switch (state){
             case MyBot.STATE_SEARCH : MyBot.state = new StateSearch();
+            MyBot.user_sate = MyBot.STATE_SEARCH;
                 break;
 
             case MyBot.STATE_MANAGE : MyBot.state = new StateManage();
+                MyBot.user_sate = MyBot.STATE_MANAGE;
                 break;
         }
 
         MyBot.state.message();
 
         try {
-            DbHelper.insertUserState(MyBot.chat_id, state);
+            DbHelper.insertUserState(MyBot.chat_id, MyBot.user_sate);
         } catch (SQLException e) {
             e.printStackTrace();
         }

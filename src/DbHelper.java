@@ -36,7 +36,6 @@ public class DbHelper {
         ResultSet result = connection.createStatement().executeQuery("select user_state from new_schema.user_state where user_id = '" + chatID + "';" );
         while (result.next()) {
             state = result.getString("user_state");
-            break;
         }
 
         return state;
@@ -65,6 +64,7 @@ public class DbHelper {
             statement.executeUpdate("insert into new_schema.user_state (user_id, user_state) values (" + chat_id + ",'" + state + "');");
         }
     }
+
     static List<RestaurantsModel> fetchFood(String food) throws SQLException {
         getConnection();
         List<RestaurantsModel> models = new ArrayList<>();

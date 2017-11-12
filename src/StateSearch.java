@@ -64,7 +64,7 @@ public class StateSearch implements State{
                 List<InlineKeyboardButton> rows = new ArrayList<>();
 
                 for (RestaurantsModel model : searchResult)
-                    rows.add(new InlineKeyboardButton("رستوران " + model.names + "<br>" + model.description).setCallbackData(model.names));
+                    rows.add(new InlineKeyboardButton("رستوران " + model.names +" "+ model.discount + "% " + "🤑" ).setCallbackData(model.names));
 
                 matrix.add(rows);
                 msg = new SendMessage(update.getMessage().getChatId(), "نتایج جستجو:").setReplyMarkup(inlineKeyboardMarkup.setKeyboard(matrix));

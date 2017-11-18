@@ -74,7 +74,7 @@ public class DbHelper {
             models.add(new RestaurantsModel(result.getInt("id_restaurants"), result.getString("names"),
                     result.getString("addresses"), result.getString("telephone_numbers"),
                     result.getString("description"), result.getInt("startofwork"), result.getInt("discount"),
-                    result.getInt("endofwork")));
+                    result.getInt("endofwork"), result.getInt("idmenue")));
 
         }
 

@@ -20,6 +20,8 @@ public class StateMain implements State {
 
     private final static String Main_Callback_Food ="Main_Keyboard_Callback_Food";
     private final static String Main_Callback_Manage ="Main_Keyboard_Callback_Manage";
+    final static String Main_Callback_Confirm="Main_Keyboard_Callback_CONFIRM";
+     final static String Main_Callback_End ="Main_Keyboard_Callback_END";
 
 
     @Override

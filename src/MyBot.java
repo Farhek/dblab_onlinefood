@@ -19,6 +19,7 @@ public class MyBot extends TelegramLongPollingBot  {
     final static String STATE_ORDER = "ORDER_STATE";
     final static String STATE_TYPE = "TYPE_STATE";
     final static String STATE_PAYMENT = "PAYMENT_STATE";
+    final static String STATE_END = "PAYMENT_END";
 
 
     final  static String url = "jdbc:mysql://localhost:3306/new_schema";
@@ -56,8 +57,11 @@ public class MyBot extends TelegramLongPollingBot  {
             state = new StatePaymentType();
         }else if(user_sate.equals(STATE_PAYMENT)){
             state = new StatePayment();
+        } else if(user_sate.equals(STATE_END)){
+            state = new StateEnd();
         } else
             state = new StateMain();
+
 
         //******************//
         state.Validate(update);

@@ -74,7 +74,7 @@ public class DbHelper {
             models.add(new RestaurantsModel(result.getInt("id_restaurants"), result.getString("names"),
                     result.getString("addresses"), result.getString("telephone_numbers"),
                     result.getString("description"), result.getInt("startofwork"), result.getInt("discount"),
-                    result.getInt("endofwork"), result.getInt("idmenue")));
+                    result.getInt("endofwork"), result.getInt("idmenue"), result.getInt("price") , result.getString("food")));
 
         }
 
@@ -91,6 +91,7 @@ public class DbHelper {
             statement.executeUpdate("insert into new_schema.user_state (user_id, address) values (" + chat_id + ",'" + address + "');");
         }
     }
+
 
 
 }

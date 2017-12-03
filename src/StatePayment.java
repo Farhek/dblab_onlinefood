@@ -14,7 +14,7 @@ import java.util.List;
 public class StatePayment implements State {
     @Override
     public void message() {
-        SendMessage msg = new SendMessage(MyBot.chat_id ,"نام غذا : " + StateSearch.selected.food +  "\n" + "قیمت غذا : " + StateSearch.selected.price  );
+        SendMessage msg = new SendMessage(MyBot.chat_id ,"نام غذا : " + StateSearch.selected.food +  "\n" + "نام رستوران : " + StateSearch.selected.names +  "\n" + "آدرس رستوران : " + StateSearch.selected.addresses );
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> matrix = new ArrayList<>();
 

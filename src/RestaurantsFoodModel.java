@@ -1,7 +1,7 @@
 /**
  * Created by hosna on 11/4/2017 AD.
  */
-public class RestaurantsModel {
+public class RestaurantsFoodModel {
     int id_restaurants;
     String names;
     String addresses;
@@ -10,7 +10,8 @@ public class RestaurantsModel {
     int food_id;
     String food;
 
-    public RestaurantsModel(int id_restaurants, String names, String addresses, String telephone_numbers, String description, int startofwork, int endofwork, int discount, int fi , int price , String food ) {
+
+    public RestaurantsFoodModel(int id_restaurants, String names, String addresses, String telephone_numbers, String description, int startofwork, int endofwork, int discount, int fi , int price , String food ) {
         this.id_restaurants = id_restaurants;
         this.price = price;
         this.names = names;

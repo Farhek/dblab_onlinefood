@@ -3,9 +3,10 @@ import org.telegram.telegrambots.api.objects.Update;
 /**
  * Created by hosna on 12/17/2017 AD.
  */
-public class StateMenue implements State {
+public class StatePrice implements State {
     @Override
     public void message() {
+
     }
 
     @Override

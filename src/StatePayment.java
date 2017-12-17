@@ -36,9 +36,17 @@ public class StatePayment implements State {
 
     @Override
     public void ChangeState(String state) {
-        MyBot.state = new StateEnd();
-        MyBot.user_sate = MyBot.STATE_END;
+        switch (state){
+            case MyBot.STATE_END :
+                MyBot.state = new StateEnd();
+                break;
 
+            case MyBot.STATE_UNSUCCESSFUL :
+                MyBot.state = new StateUnsuccessful();
+                break;
+        }
+
+        MyBot.user_sate = state;
         MyBot.state.message();
 
         try {
@@ -50,9 +58,6 @@ public class StatePayment implements State {
 
     static String CONFIRM_ORDER = " تایید ";
     static String END_ORDER = " لغو ";
-    private final static String Main_Callback_CONFIRM="Main_Keyboard_Callback_Food";
-    private final static String Main_Callback_Manage ="Main_Keyboard_Callback_Manage";
-
 
     @Override
     public void Validate(Update update) {
@@ -64,7 +69,7 @@ public class StatePayment implements State {
             if (call_data.equals(StateMain.Main_Callback_Confirm)) {
                 ChangeState(MyBot.STATE_END);
             } else if (call_data.equals(StateMain.Main_Callback_End)) {
-                ChangeState(MyBot.STATE_END);
+                ChangeState(MyBot.STATE_UNSUCCESSFUL);
             }
         }
 

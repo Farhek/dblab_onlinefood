@@ -28,7 +28,7 @@ public class StateDescription implements State{
     @Override
     public void Validate(Update update) {
         if(update.getMessage().getText() != null) {
-            StateManage.model.addresses = update.getMessage().getText();
+            StateManage.model.description= update.getMessage().getText();
             ChangeState(MyBot.STATE_PHONE);
         }
 

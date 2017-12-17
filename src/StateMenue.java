@@ -6,7 +6,7 @@ import org.telegram.telegrambots.api.objects.Update;
 public class StateMenue implements State {
     @Override
     public void message() {
-        
+
     }
 
     @Override

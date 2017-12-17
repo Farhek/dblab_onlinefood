@@ -1,22 +1,17 @@
-
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-
 /**
- * Created by Asus on 29/10/2017.
+ * Created by hosna on 12/17/2017 AD.
  */
-public class StateManage implements State {
+public class StatePhone implements State {
 
-    static RestaurantModel model;
     @Override
     public void message() {
-        SendMessage msg = new SendMessage(MyBot.chat_id, "به قسمت مدیریت رستوران خوش آمدید. ");
-        SendMessage msg2 = new SendMessage(MyBot.chat_id, "نام رستوران خود را وارد کنید : ");
+        SendMessage msg = new SendMessage(MyBot.chat_id, "شماره تماس رستوران را وارد کنید : ");
         try {
             Main.bot.execute(msg);
-            Main.bot.execute(msg2);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
@@ -25,7 +20,7 @@ public class StateManage implements State {
 
     @Override
     public void ChangeState(String state) {
-        MyBot.state = new StateAddress();
+        MyBot.state = new StateDiscount();
         MyBot.user_sate = state;
 
         MyBot.state.message();
@@ -34,10 +29,9 @@ public class StateManage implements State {
     @Override
     public void Validate(Update update) {
         if(update.getMessage().getText() != null) {
-            model = new RestaurantModel(update.getMessage().getText());
-            ChangeState(MyBot.STATE_ADDRESS);
+            StateManage.model.addresses = update.getMessage().getText();
+            ChangeState(MyBot.STATE_DISCOUNT);
         }
 
     }
-
 }

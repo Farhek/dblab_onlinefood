@@ -22,6 +22,13 @@ public class MyBot extends TelegramLongPollingBot  {
     final static String STATE_END = "PAYMENT_END";
     final static String STATE_UNSUCCESSFUL = "UNSUCCESSFUL";
 
+
+    final static String STATE_ADDRESS = "ADDRESS";
+    final static String STATE_DESCRIPTION = "Description";
+    final static String STATE_PHONE = "PHONE";
+    final static String STATE_DISCOUNT = "DISCOUNT";
+    final static String STATE_MENUE = "MENUE";
+
     final  static String url = "jdbc:mysql://localhost:3306/new_schema";
     final  static String username = "newuser";
     final  static String password = "Mysqlpass95/";

@@ -17,8 +17,8 @@ public class StateSearch implements State{
 
     final static String Search_Callback_Manage ="Search_Keyboard_Callback";
 
-    static List<RestaurantsModel> searchResult;
-    static RestaurantsModel selected;
+    static List<RestaurantsFoodModel> searchResult;
+    static RestaurantsFoodModel selected;
 
 
     @Override
@@ -63,7 +63,7 @@ public class StateSearch implements State{
                 List<List<InlineKeyboardButton>> matrix = new ArrayList<>();
                 List<InlineKeyboardButton> rows = new ArrayList<>();
 
-                for (RestaurantsModel model : searchResult)
+                for (RestaurantsFoodModel model : searchResult)
                     rows.add(new InlineKeyboardButton("رستوران " + model.names +" "+ model.discount + "% " + "🤑" ).setCallbackData(model.names));
 
                 matrix.add(rows);
@@ -78,7 +78,7 @@ public class StateSearch implements State{
                 e.printStackTrace();
             }
         } else if(update.hasCallbackQuery()){
-            for(RestaurantsModel model : searchResult)
+            for(RestaurantsFoodModel model : searchResult)
                 if(model.names.equals(update.getCallbackQuery().getData())) {
                     selected = model;
                     ChangeState(MyBot.STATE_ORDER);

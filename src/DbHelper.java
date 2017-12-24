@@ -81,14 +81,15 @@ public class DbHelper {
         return models;
     }
 
-    static void insertOrderAddress(long chat_id, String address) throws SQLException {
+    static void insertOrder(OrderModel model) throws SQLException {
         getConnection();
         System.out.println("Database connected!");
         Statement statement;
         if(connection != null) {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
-            statement.executeUpdate("insert into new_schema.user_state (user_id, address) values (" + chat_id + ",'" + address + "');");
+            statement.executeUpdate("insert into new_schema.orders (user_id, idmenue, user_address, payment) values (" + MyBot.chat_id + ",'" + model.idmenue +
+                    ",'" + model.user_address + ",'" + model.payment + "');");
         }
     }
 
@@ -104,7 +105,7 @@ public class DbHelper {
                 statement.executeUpdate("update new_schema.restaurants SET names= " + model.names + ", addresses= " + model.addresses
                         + ", telephone_numbers= " + model.telephone_numbers + ", description= " + model.description + ", discount= " + model.discount + ";");
             }else {
-                statement.executeUpdate("insert into new_schema.restaurants values (" +model.id_restaurants + ",'" + model.names + ",'"
+                statement.executeUpdate("insert into new_schema.restaurants values (" + model.id_restaurants + ",'" + model.names + ",'"
                         + model.addresses + ",'" + model.telephone_numbers + ",'" + model.description + ",'" + 12 + ",'" + 12 + ",'" + model.discount + "');");
             }
         }
@@ -120,7 +121,7 @@ public class DbHelper {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            statement.executeUpdate("insert into new_schema.menue values (" + model.idmenue + ",'" + model.id_restuarants + ",'"
+            statement.executeUpdate("insert into new_schema.menue (id_restuarants, food, type, price) values (" + model.id_restuarants + ",'"
                     + model.food + ",'" + model.type+ ",'" + model.price + "');");
 
         }

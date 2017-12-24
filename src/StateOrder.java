@@ -1,3 +1,4 @@
+import org.omg.CORBA.ORB;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -9,7 +10,8 @@ import java.sql.SQLException;
  */
 public class StateOrder implements State {
 
-    static String order_address;
+    static OrderModel model;
+
     @Override
     public void message() {
         SendMessage msg = new SendMessage(MyBot.chat_id, "آدرس خود را وارد کنید:");
@@ -38,7 +40,10 @@ public class StateOrder implements State {
     @Override
     public void Validate(Update update) {
         if(update.hasMessage() && update.getMessage().hasText()){
-            order_address = update.getMessage().getText();
+            model = new OrderModel();
+            model.idmenue = StateSearch.selected.food_id; //idmenue
+            model.user_address = update.getMessage().getText();
+
             ChangeState(MyBot.STATE_TYPE);
         }
     }

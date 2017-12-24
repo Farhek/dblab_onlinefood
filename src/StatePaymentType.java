@@ -58,8 +58,10 @@ public class StatePaymentType implements State{
 
             if (call_data.equals(PAY_CASH)) {
                 ChangeState(MyBot.STATE_PAYMENT);
+                StateOrder.model.payment = "نقدی";
             } else if (call_data.equals(PAY_ONLINE)) {
                 ChangeState(MyBot.STATE_PAYMENT);
+                StateOrder.model.payment = "آنلاین";
             }
         }
     }

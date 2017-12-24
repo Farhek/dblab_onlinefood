@@ -39,6 +39,11 @@ public class StatePayment implements State {
         switch (state){
             case MyBot.STATE_END :
                 MyBot.state = new StateEnd();
+                try {
+                    DbHelper.insertOrder(StateOrder.model);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case MyBot.STATE_UNSUCCESSFUL :

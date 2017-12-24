@@ -88,8 +88,8 @@ public class DbHelper {
         if(connection != null) {
             statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
-            statement.executeUpdate("insert into new_schema.orders (user_id, idmenue, user_address, payment) values (" + MyBot.chat_id + ",'" + model.idmenue +
-                    ",'" + model.user_address + ",'" + model.payment + "');");
+            statement.executeUpdate("insert into new_schema.orders (user_id, idmenue, user_address, payment) values (" + MyBot.chat_id + "," + model.idmenue +
+                    ",'" + model.user_address + "','" + model.payment + "');");
         }
     }
 
@@ -104,7 +104,7 @@ public class DbHelper {
             if(result.next()){
                 statement.executeUpdate("update new_schema.restaurants SET names= '" + model.names + "', addresses= '" + model.addresses
                         + "', telephone_numbers= '" + model.telephone_numbers + "', description= '" + model.description + "', discount= " + model.discount
-                        + " where id_restaurants= " + MyBot.chat_id +";");
+                        + " where id_restaurants= " + MyBot.chat_id + ";");
             }else {
                 statement.executeUpdate("insert into new_schema.restaurants values (" + model.id_restaurants + ",'" + model.names + "','"
                         + model.addresses + "','" + model.telephone_numbers + "','" + model.description + "'," + 12 + "," + 12 + "," + model.discount + ");");

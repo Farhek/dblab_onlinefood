@@ -13,9 +13,6 @@ import java.util.List;
  */
 public class StateSearch implements State{
 
-    static final String SEARCH_FOOD = "جستجوی غذا";
-
-    final static String Search_Callback_Manage ="Search_Keyboard_Callback";
 
     static List<RestaurantsFoodModel> searchResult;
     static RestaurantsFoodModel selected;

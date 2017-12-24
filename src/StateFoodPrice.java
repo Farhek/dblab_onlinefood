@@ -4,19 +4,15 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 
-/**
- * Created by hosna on 12/17/2017 AD.
- */
-public class StateDiscount implements State {
+public class StateFoodPrice implements State {
     @Override
     public void message() {
-        SendMessage msg = new SendMessage(MyBot.chat_id, "اگر رستوران شما تخفیف دارد مقدار آن را وارد نمایید : ");
+        SendMessage msg = new SendMessage(MyBot.chat_id, "قیمت غذا/نوشیدنی را به تومان وارد کنید: ");
         try {
             Main.bot.execute(msg);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -35,10 +31,18 @@ public class StateDiscount implements State {
 
     @Override
     public void Validate(Update update) {
-        if(update.getMessage().getText() != null) {
-            StateManage.model.discount = Integer.parseInt(update.getMessage().getText());
+        if(update.getMessage().hasText()){
+            StateMenue.model.price = Integer.parseInt(update.getMessage().getText());
+
+            SendMessage msg = new SendMessage(MyBot.chat_id, "آیتم با موففیت ثبت شد ");
             try {
-                DbHelper.insertRestaurant(StateManage.model);
+                Main.bot.execute(msg);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                DbHelper.insertFood(StateMenue.model);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

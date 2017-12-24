@@ -27,7 +27,11 @@ public class MyBot extends TelegramLongPollingBot  {
     final static String STATE_DESCRIPTION = "Description";
     final static String STATE_PHONE = "PHONE";
     final static String STATE_DISCOUNT = "DISCOUNT";
+
     final static String STATE_MENUE = "MENUE";
+    final static String STATE_FOOD_NAME = "food_name";
+    final static String STATE_FOOD_TYPE = "food_type";
+    final static String STATE_FOOD_PRICE = "food_price";
 
     final  static String url = "jdbc:mysql://localhost:3306/new_schema";
     final  static String username = "newuser";
@@ -42,33 +46,36 @@ public class MyBot extends TelegramLongPollingBot  {
         if(update.hasMessage() && update.getMessage().getChatId() != chat_id)
             chat_id = update.getMessage().getChatId();
 
+        if(update.getMessage().getText().equals("/start"))
+            state = new StateMain();
+        else {
 
-        try {
-            if(update.getMessage() != null)
-            user_sate = DbHelper.fetchUserState(update.getMessage().getChatId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+                if (update.getMessage() != null)
+                    user_sate = DbHelper.fetchUserState(update.getMessage().getChatId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            if (user_sate == null) {
+                state = new StateMain();
+            } else if (user_sate.equals(STATE_MAIN)) {
+                state = new StateMain();
+            } else if (user_sate.equals(STATE_SEARCH)) {
+                state = new StateSearch();
+            } else if (user_sate.equals(STATE_MANAGE)) {
+                state = new StateManage();
+            } else if (user_sate.equals(STATE_ORDER)) {
+                state = new StateOrder();
+            } else if (user_sate.equals(STATE_TYPE)) {
+                state = new StatePaymentType();
+            } else if (user_sate.equals(STATE_PAYMENT)) {
+                state = new StatePayment();
+            } else if (user_sate.equals(STATE_END)) {
+                state = new StateEnd();
+            } else
+                state = new StateMain();
         }
-
-        if(user_sate == null){
-            state = new StateMain();
-        } else if(user_sate.equals(STATE_MAIN)){
-            state = new StateMain();
-        } else if(user_sate.equals(STATE_SEARCH)){
-            state = new StateSearch();
-        } else if(user_sate.equals(STATE_MANAGE)){
-            state = new StateManage();
-        }else if(user_sate.equals(STATE_ORDER)){
-            state = new StateOrder();
-        }else if(user_sate.equals(STATE_TYPE)){
-            state = new StatePaymentType();
-        }else if(user_sate.equals(STATE_PAYMENT)){
-            state = new StatePayment();
-        } else if(user_sate.equals(STATE_END)){
-            state = new StateEnd();
-        } else
-            state = new StateMain();
-
 
         //******************//
         state.Validate(update);

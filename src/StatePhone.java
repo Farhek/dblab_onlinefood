@@ -2,6 +2,8 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.sql.SQLException;
+
 /**
  * Created by hosna on 12/17/2017 AD.
  */
@@ -24,6 +26,12 @@ public class StatePhone implements State {
         MyBot.user_sate = state;
 
         MyBot.state.message();
+
+        try {
+            DbHelper.insertUserState(MyBot.chat_id, MyBot.user_sate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

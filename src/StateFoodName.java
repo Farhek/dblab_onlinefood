@@ -32,7 +32,7 @@ public class StateFoodName implements State {
 
     @Override
     public void Validate(Update update) {
-        if(update.getMessage().hasText()){
+        if(update.hasMessage() && update.getMessage().hasText()){
             StateMenue.model.food = update.getMessage().getText();
 
             ChangeState(MyBot.STATE_FOOD_PRICE);

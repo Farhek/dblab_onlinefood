@@ -46,8 +46,16 @@ public class MyBot extends TelegramLongPollingBot  {
         if(update.hasMessage() && update.getMessage().getChatId() != chat_id)
             chat_id = update.getMessage().getChatId();
 
-        if(update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().equals("/start"))
+        if(update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().equals("/start")) {
             state = new StateMain();
+            user_sate = STATE_MAIN;
+            MyBot.state.message();
+            try {
+                DbHelper.insertUserState(MyBot.chat_id, MyBot.user_sate);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         else {
 
             try {

@@ -20,7 +20,7 @@ public class StateUnsuccessful implements State {
         List<List<InlineKeyboardButton>> matrix = new ArrayList<>();
 
         List<InlineKeyboardButton> row = new ArrayList<>();
-        SendMessage msg2 = new SendMessage(MyBot.chat_id, "");
+        SendMessage msg2 = new SendMessage(MyBot.chat_id, "...");
         row.add(new InlineKeyboardButton("سفارش مجدد").setCallbackData("ORDER_AGAIN"));
 
         matrix.add(row);

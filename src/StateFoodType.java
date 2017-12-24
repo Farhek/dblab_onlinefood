@@ -16,7 +16,7 @@ public class StateFoodType implements State{
         List<List<InlineKeyboardButton>> matrix = new ArrayList<>();
 
         List<InlineKeyboardButton> row = new ArrayList<>();
-        SendMessage msg = new SendMessage(MyBot.chat_id, "");
+        SendMessage msg = new SendMessage(MyBot.chat_id, "...");
         row.add(new InlineKeyboardButton("غذا").setCallbackData("ّFOOD"));
         row.add(new InlineKeyboardButton("پیش غذا").setCallbackData("DESERT"));
         row.add(new InlineKeyboardButton("نوشیدنی").setCallbackData("DRINK"));

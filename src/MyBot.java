@@ -46,7 +46,7 @@ public class MyBot extends TelegramLongPollingBot  {
         if(update.hasMessage() && update.getMessage().getChatId() != chat_id)
             chat_id = update.getMessage().getChatId();
 
-        if(update.getMessage().getText().equals("/start"))
+        if(update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().equals("/start"))
             state = new StateMain();
         else {
 
@@ -73,7 +73,34 @@ public class MyBot extends TelegramLongPollingBot  {
                 state = new StatePayment();
             } else if (user_sate.equals(STATE_END)) {
                 state = new StateEnd();
-            } else
+            } else if (user_sate.equals(STATE_DESCRIPTION)) {
+                state = new StateDescription();
+            }
+            else if (user_sate.equals(STATE_ADDRESS)) {
+                state = new StateAddress();
+            }
+            else if (user_sate.equals(STATE_DISCOUNT)) {
+                state = new StateDiscount();
+            }
+            else if (user_sate.equals(STATE_PHONE)) {
+                state = new StatePhone();
+            }
+            else if (user_sate.equals(STATE_FOOD_TYPE)) {
+                state = new StateFoodType();
+            }
+            else if (user_sate.equals(STATE_FOOD_NAME)) {
+                state = new StateFoodName();
+            }
+            else if (user_sate.equals(STATE_FOOD_PRICE)) {
+                state = new StateFoodPrice();
+            }
+            else if (user_sate.equals(STATE_UNSUCCESSFUL)) {
+                state = new StateUnsuccessful();
+            }
+            else if (user_sate.equals(STATE_MENUE)) {
+                state = new StateMenue();
+            }
+            else
                 state = new StateMain();
         }
 

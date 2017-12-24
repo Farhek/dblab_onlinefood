@@ -21,7 +21,7 @@ public class StateMenue implements State {
         List<List<InlineKeyboardButton>> matrix = new ArrayList<>();
 
         List<InlineKeyboardButton> row = new ArrayList<>();
-        SendMessage msg = new SendMessage(MyBot.chat_id, "");
+        SendMessage msg = new SendMessage(MyBot.chat_id, " ... ");
         row.add(new InlineKeyboardButton("اضافه کردن غذا/نوشیدنی جدید").setCallbackData("ADD_NEW_FOOD"));
 
         matrix.add(row);

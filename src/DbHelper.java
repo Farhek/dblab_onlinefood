@@ -103,7 +103,8 @@ public class DbHelper {
             ResultSet result = statement.executeQuery("select id_restaurants from restaurants where id_restaurants = " + model.id_restaurants + ";");
             if(result.next()){
                 statement.executeUpdate("update new_schema.restaurants SET names= '" + model.names + "', addresses= '" + model.addresses
-                        + "', telephone_numbers= '" + model.telephone_numbers + "', description= '" + model.description + "', discount= " + model.discount + ";");
+                        + "', telephone_numbers= '" + model.telephone_numbers + "', description= '" + model.description + "', discount= " + model.discount
+                        + " where id_restaurants= " + MyBot.chat_id +";");
             }else {
                 statement.executeUpdate("insert into new_schema.restaurants values (" + model.id_restaurants + ",'" + model.names + "','"
                         + model.addresses + "','" + model.telephone_numbers + "','" + model.description + "'," + 12 + "," + 12 + "," + model.discount + ");");
